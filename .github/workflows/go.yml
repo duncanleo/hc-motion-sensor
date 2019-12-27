@@ -13,6 +13,11 @@ jobs:
         go-version: 1.13
       id: go
 
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
     - name: Extract branch name
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
@@ -38,28 +43,15 @@ jobs:
         GOOS=windows GOARCH=amd64 go build -v -o ${GITHUB_REPOSITORY##*/}-win32-x64 ./...
         GOOS=windows GOARCH=386 go build -v -o ${GITHUB_REPOSITORY##*/}-win32-ia32 ./...
         GOOS=darwin GOARCH=amd64 go build -v -o ${GITHUB_REPOSITORY##*/}-darwin-x64 ./...
-    
-    - name: Create a Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.extract_branch.outputs.branch }}
-        release_name: ${{ steps.extract_branch.outputs.branch }}
-        draft: false
-        prerelease: false
 
-    - name: Upload a Release Asset
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Generate changelog
+      run: |
+        npm install -g conventional-changelog-cli
+        conventional-changelog -p angular -i CHANGELOG.md -s -r 0 -v
+
+    - uses: ncipollo/release-action@v1
       with:
-        # The URL for uploading assets to the release
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        # The path to the asset you want to upload
-        asset_path: ${{ steps.extract_repo.outputs.repo }}-linux-x64
-        # The name of the asset you want to upload
-        asset_name: ${{ steps.extract_repo.outputs.repo }}-linux-x64
-        # The content-type of the asset you want to upload. See the supported Media Types here: https://www.iana.org/assignments/media-types/media-types.xhtml for more information
-        asset_content_type: application/x-elf
+        artifacts: ${{ steps.extract_repo.outputs.repo }}-*
+        bodyFile: "CHANGELOG.md"
+        token: ${{ secrets.GITHUB_TOKEN }}
+
