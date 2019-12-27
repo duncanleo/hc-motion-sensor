@@ -17,6 +17,11 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
+    
+    - name: Extract repository name
+      shell: bash
+      run: echo "##[set-output name=repo;]$(echo ${GITHUB_REPOSITORY##*/})"
+      id: extract_repo
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
@@ -35,6 +40,7 @@ jobs:
         GOOS=darwin GOARCH=amd64 go build -v -o ${GITHUB_REPOSITORY##*/}-darwin-x64 ./...
     
     - name: Create a Release
+      id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -52,8 +58,8 @@ jobs:
         # The URL for uploading assets to the release
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         # The path to the asset you want to upload
-        asset_path: ${GITHUB_REPOSITORY##*/}-linux-x64
+        asset_path: ${{ steps.extract_repo.outputs.repo }}-linux-x64
         # The name of the asset you want to upload
-        asset_name: ${GITHUB_REPOSITORY##*/}-linux-x64
+        asset_name: ${{ steps.extract_repo.outputs.repo }}-linux-x64
         # The content-type of the asset you want to upload. See the supported Media Types here: https://www.iana.org/assignments/media-types/media-types.xhtml for more information
         asset_content_type: application/x-elf
