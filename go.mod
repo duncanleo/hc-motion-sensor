@@ -1,4 +1,4 @@
-module github.com/duncanleo/hc-rain-sensor
+module github.com/duncanleo/hc-motion-sensor
 
 go 1.13
 

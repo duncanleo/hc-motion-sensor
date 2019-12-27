@@ -1,13 +1,13 @@
-# hc-rain-sensor
-This is a HomeKit rain sensor built with [hc](https://github.com/brutella/hc). It emulates a motion sensor.
+# hc-motion-sensor
+This is a HomeKit motion sensor built with [hc](https://github.com/brutella/hc).
 
 ### Usage
 ```shell
-Usage of hc-rain-sensor:
+Usage of hc-motion-sensor:
   -brokerURI string
         URI of the MQTT broker (default "mqtt://127.0.0.1:1883")
   -clientID string
-        client ID for MQTT (default "hc-rain-sensor")
+        client ID for MQTT (default "hc-motion-sensor")
   -jsonPath string
         path to JSON boolean (default "wet")
   -manufacturer string
@@ -15,7 +15,7 @@ Usage of hc-rain-sensor:
   -model string
         model number of the sensor (default "FC-37")
   -name string
-        name of the sensor to display in HomeKit (default "hc-rain-sensor")
+        name of the sensor to display in HomeKit (default "hc-motion-sensor")
   -pin string
         PIN number to pair the HomeKit accessory (default "00102003")
   -port string
@@ -23,9 +23,9 @@ Usage of hc-rain-sensor:
   -serial string
         serial number of the sensor (default "0000")
   -storagePath string
-        path to store data (default "hc-rain-sensor-data")
+        path to store data (default "hc-motion-sensor-data")
   -topic string
-        topic to subscribe in MQTT (default "rain")
+        topic to subscribe in MQTT (default "motion")
 ```
 
 ### JSON Path

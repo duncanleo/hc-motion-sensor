@@ -34,18 +34,18 @@ func connect(clientID string, uri *url.URL) (mqtt.Client, error) {
 }
 
 func main() {
-	var name = flag.String("name", "hc-rain-sensor", "name of the sensor to display in HomeKit")
+	var name = flag.String("name", "hc-motion-sensor", "name of the sensor to display in HomeKit")
 	var manufacturer = flag.String("manufacturer", "TZT", "manufacturer of the sensor")
 	var model = flag.String("model", "FC-37", "model number of the sensor")
 	var serial = flag.String("serial", "0000", "serial number of the sensor")
 	var pin = flag.String("pin", "00102003", "PIN number to pair the HomeKit accessory")
 	var port = flag.String("port", "", "Port number for the HomeKit accessory")
-	var storagePath = flag.String("storagePath", "hc-rain-sensor-data", "path to store data")
+	var storagePath = flag.String("storagePath", "hc-motion-sensor-data", "path to store data")
 
 	var brokerURI = flag.String("brokerURI", "mqtt://127.0.0.1:1883", "URI of the MQTT broker")
-	var clientID = flag.String("clientID", "hc-rain-sensor", "client ID for MQTT")
+	var clientID = flag.String("clientID", "hc-motion-sensor", "client ID for MQTT")
 
-	var topic = flag.String("topic", "rain", "topic to subscribe in MQTT")
+	var topic = flag.String("topic", "motion", "topic to subscribe in MQTT")
 	var jsonPath = flag.String("jsonPath", "wet", "path to JSON boolean")
 
 	flag.Parse()
