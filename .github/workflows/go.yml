@@ -13,6 +13,11 @@ jobs:
         go-version: 1.13
       id: go
 
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
 
@@ -34,8 +39,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${GITHUB_REF##*/}-${GITHUB_SHA}
-        release_name: ${GITHUB_REF##*/}-${GITHUB_SHA}
+        tag_name: ${{ steps.extract_branch.outputs.branch }}
+        release_name: ${{ steps.extract_branch.outputs.branch }}
         draft: false
         prerelease: false
 
